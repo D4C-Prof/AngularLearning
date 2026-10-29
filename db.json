@@ -1,0 +1,95 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "titre": "Angular 19 & Architecture Moderne",
+      "intervenant": "Dr. Jean Dupont",
+      "date": "15 Mars 2026",
+      "heure": "09h00 - 11h30",
+      "salle": "Amphi Alan Turing",
+      "categorie": "Frontend",
+      "placesDisponibles": 12,
+      "totalPlaces": 30,
+      "description": "Découvrez les dernières fonctionnalités d’Angular : Signals, Control Flow natif, SSR, hydration et standalone components pour des architectures scalables.",
+      "estInscrit": false
+    },
+    {
+      "id": 2,
+      "titre": "Intelligence Artificielle & Web Apps",
+      "intervenant": "Mme. Sophie Martin",
+      "date": "22 Mars 2026",
+      "heure": "14h00 - 16h30",
+      "salle": "Auditorium Ada Lovelace",
+      "categorie": "IA & Data",
+      "placesDisponibles": 4,
+      "totalPlaces": 25,
+      "description": "Comment intégrer des modèles LLM et du Machine Learning dans vos applications front-end modernes de manière performante et sécurisée.",
+      "estInscrit": true
+    },
+    {
+      "id": 3,
+      "titre": "TypeScript Avancé : Typage et Design Patterns",
+      "intervenant": "M. Thomas Bernard",
+      "date": "05 Avril 2026",
+      "heure": "10h00 - 12h00",
+      "salle": "Salle Grace Hopper (B102)",
+      "categorie": "Langages",
+      "placesDisponibles": 0,
+      "totalPlaces": 20,
+      "description": "Maîtriser les génériques, les types conditionnels, la programmation orientée types et les meilleures pratiques pour des projets d’envergure.",
+      "estInscrit": false
+    },
+    {
+      "id": 4,
+      "titre": "Cybersécurité Web : Défense & Audit des APIs",
+      "intervenant": "Dr. Leila Ben Amor",
+      "date": "12 Avril 2026",
+      "heure": "13h30 - 15h30",
+      "salle": "Lab Cyber (C204)",
+      "categorie": "Sécurité",
+      "placesDisponibles": 8,
+      "totalPlaces": 18,
+      "description": "Audit de vulnérabilités OWASP, gestion avancée des tokens JWT, protection CSRF/XSS et sécurisation des échanges REST/GraphQL.",
+      "estInscrit": false
+    },
+    {
+      "id": 5,
+      "titre": "Cloud Native & DevOps avec Kubernetes",
+      "intervenant": "Ing. Karim Trabelsi",
+      "date": "20 Avril 2026",
+      "heure": "15h00 - 17h30",
+      "salle": "Amphi Alan Turing",
+      "categorie": "DevOps & Cloud",
+      "placesDisponibles": 15,
+      "totalPlaces": 35,
+      "description": "Conteneurisation, orchestrateur Kubernetes, déploiement continu avec GitHub Actions et monitoring d’infrastructure moderne.",
+      "estInscrit": false
+    },
+    {
+      "id": 6,
+      "titre": "UX/UI Design Systems & Micro-Interactions",
+      "intervenant": "Mme. Clara Dubois",
+      "date": "28 Avril 2026",
+      "heure": "11h00 - 13h00",
+      "salle": "Studio Design (D101)",
+      "categorie": "Design & UX",
+      "placesDisponibles": 4,
+      "totalPlaces": 15,
+      "description": "Construire un Design System cohérent sous Figma, le transposer en composants réutilisables et soigner l’accessibilité numérique.",
+      "estInscrit": false
+    },
+    {
+      "titre": "confiture",
+      "intervenant": "himothy",
+      "date": "2/25/2026",
+      "heure": "10h00",
+      "salle": "3nd chedli",
+      "categorie": "IA & Data",
+      "placesDisponibles": 25,
+      "totalPlaces": 25,
+      "description": "hehe",
+      "estInscrit": false,
+      "id": 7
+    }
+  ]
+}

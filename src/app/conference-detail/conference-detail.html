@@ -1,0 +1,95 @@
+@if (conference(); as conf) {
+  <div class="detail-card">
+    <div class="detail-header">
+      <div class="badge-group">
+        <span class="badge">Détails de la conférence</span>
+        @if (conf.categorie) {
+          <span class="badge-category">{{ conf.categorie }}</span>
+        }
+      </div>
+      <h2 class="detail-title">{{ conf.titre }}</h2>
+    </div>
+
+    <div class="detail-body">
+      <div class="info-row">
+        <span class="label">👤 Intervenant :</span>
+        <span class="value">{{ conf.intervenant }}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="label">🗓️ Date :</span>
+        <span class="value">{{ conf.date }}</span>
+      </div>
+
+      @if (conf.heure) {
+        <div class="info-row">
+          <span class="label">⏰ Horaire :</span>
+          <span class="value">{{ conf.heure }}</span>
+        </div>
+      }
+
+      @if (conf.salle) {
+        <div class="info-row">
+          <span class="label">📍 Salle / Lieu :</span>
+          <span class="value">{{ conf.salle }}</span>
+        </div>
+      }
+
+      <div class="info-row">
+        <span class="label">🎟️ Places disponibles :</span>
+        <span class="value" [class.no-places]="conf.placesDisponibles === 0">
+          <strong>{{ conf.placesDisponibles }}</strong>
+          @if (conf.totalPlaces) {
+            <span class="total-text"> / {{ conf.totalPlaces }} places au total</span>
+          }
+        </span>
+      </div>
+
+      @if (conf.description) {
+        <div class="info-description">
+          <span class="label">📝 Description :</span>
+          <p class="desc-text">{{ conf.description }}</p>
+        </div>
+      }
+
+      @if (estInscrit()) {
+        <div class="alert alert-success">
+          ✓ Vous êtes inscrit à cette conférence ! Votre place est réservée.
+        </div>
+      } @else if (conf.placesDisponibles === 0) {
+        <div class="alert alert-danger">
+          ✗ Cette conférence est actuellement complète.
+        </div>
+      }
+    </div>
+
+    <div class="detail-footer">
+      @if (estInscrit()) {
+        <button
+          type="button"
+          class="btn-cancel-reservation"
+          (click)="onAnnuler()"
+        >
+          ✕ Annuler ma réservation (libérer la place)
+        </button>
+      } @else {
+        <button
+          type="button"
+          class="btn-register"
+          [disabled]="conf.placesDisponibles === 0"
+          (click)="onInscrire()"
+        >
+          @if (conf.placesDisponibles === 0) {
+            Complet (0 place)
+          } @else {
+            S'inscrire et réserver ma place ({{ conf.placesDisponibles }} dispo)
+          }
+        </button>
+      }
+    </div>
+  </div>
+} @else {
+  <div class="empty-state">
+    <p>👈 Veuillez sélectionner une conférence dans la liste pour afficher ses détails.</p>
+  </div>
+}

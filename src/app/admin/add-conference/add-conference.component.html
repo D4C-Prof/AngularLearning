@@ -1,0 +1,25 @@
+<div class="admin-create-container">
+  <!-- Success message -->
+  <div *ngIf="successConference as conf" class="success-banner">
+    <h3>Conférence "{{ conf.titre }}" ajoutée avec succès !</h3>
+    <p>Places disponibles : {{ conf.placesDisponibles }}</p>
+    <button type="button" (click)="router.navigate(['/catalogue'])">Voir le catalogue</button>
+    <button type="button" (click)="reset()">Ajouter une autre</button>
+  </div>
+
+  <!-- Formulaire de création -->
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate *ngIf="!successConference">
+    <div class="form-group">
+      <label for="titre">Titre *</label>
+      <input id="titre" type="text" formControlName="titre" [class.is-invalid]="fieldInvalid('titre')" />
+      <div class="error-msg" *ngIf="fieldInvalid('titre')">
+        <span *ngIf="hasError('titre','required')">Titre requis.</span>
+        <span *ngIf="hasError('titre','minlength')">Minimum 5 caractères.</span>
+        <span *ngIf="hasError('titre','maxlength')">Maximum 150 caractères.</span>
+      </div>
+    </div>
+    <!-- Répétez les autres champs (intervenant, catégorie, date, …) de façon similaire -->
+    <button type="submit" [disabled]="submitted && form.invalid">Enregistrer</button>
+    <button type="button" (click)="reset()">Réinitialiser</button>
+  </form>
+</div>

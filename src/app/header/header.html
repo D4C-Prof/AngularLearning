@@ -1,0 +1,47 @@
+<header class="app-header">
+  <div class="header-inner">
+    <!-- Marque / Logo -->
+    <a class="brand" routerLink="/catalogue">
+      <div class="brand-icon">🎟️</div>
+      <div class="brand-text">
+        <span class="brand-title">ConfTech 2026</span>
+        <span class="brand-subtitle">Plateforme des Conférences</span>
+      </div>
+    </a>
+
+    <!-- Navigation principale avec routage Angular -->
+    <nav class="nav-links">
+      <a class="nav-item" routerLink="/catalogue" routerLinkActive="active">
+        <span class="icon">🏷️</span> Catalogue
+      </a>
+
+      <a class="nav-item" routerLink="/dashboard" routerLinkActive="active">
+        <span class="icon">📊</span> Tableau de bord
+      </a>
+
+      <a class="nav-item" routerLink="/profil" routerLinkActive="active">
+        <span class="icon">👤</span> Mon Profil
+      </a>
+    </nav>
+
+    <!-- Accès direct au Programme Personnalisé depuis l'en-tête -->
+    <div class="header-actions">
+      <!-- Role toggle (demo) -->
+      <button type="button" class="btn-role-toggle" [class.is-admin]="authService.isAdmin()"
+        (click)="authService.toggleRole()"
+        [title]="authService.isAdmin() ? 'Passer en mode Utilisateur' : 'Passer en mode Admin'">
+        <span class="role-icon">{{ authService.isAdmin() ? '🛡️' : '👤' }}</span>
+        <span class="role-label">{{ authService.isAdmin() ? 'Admin' : 'Utilisateur' }}</span>
+      </button>
+
+      <button type="button" class="btn-my-schedule" (click)="navigationService.toggleScheduleDrawer()"
+        title="Consulter mon programme personnalisé">
+        <span class="schedule-icon">📅</span>
+        <span class="schedule-label">Mon Programme</span>
+        <span class="badge-count" [class.has-items]="nbInscriptions() > 0">
+          {{ nbInscriptions() }}
+        </span>
+      </button>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,62 @@
+<div
+  class="conference-card"
+  [class.active]="isSelected()"
+  [class.is-registered]="estInscrit()"
+  (click)="onSelect()"
+>
+  <div class="card-header">
+    <div class="header-left">
+      @if (categorie()) {
+        <span class="category-tag">{{ categorie() }}</span>
+      }
+      <span class="card-date">{{ date() }}</span>
+    </div>
+    <span
+      class="status-pill"
+      [class.sold-out]="placesDisponibles() === 0 && !estInscrit()"
+      [class.registered]="estInscrit()"
+    >
+      @if (estInscrit()) {
+        Inscrit ✓
+      } @else if (placesDisponibles() === 0) {
+        Complet
+      } @else {
+        {{ placesDisponibles() }} place(s)
+      }
+    </span>
+  </div>
+
+  <h3 class="card-title">{{ titre() }}</h3>
+  <p class="card-speaker">👤 {{ intervenant() }}</p>
+
+  <div class="card-meta">
+    @if (heure()) {
+      <span class="meta-item">⏰ {{ heure() }}</span>
+    }
+    @if (salle()) {
+      <span class="meta-item">📍 {{ salle() }}</span>
+    }
+  </div>
+
+  <div class="card-footer">
+    <button
+      type="button"
+      class="btn-select"
+      [class.selected]="isSelected()"
+      (click)="onSelect()"
+    >
+      {{ isSelected() ? 'Sélectionné ✓' : 'Voir les détails' }}
+    </button>
+
+    @if (authService.isAdmin()) {
+      <button
+        type="button"
+        class="btn-delete"
+        (click)="onSupprimer($event)"
+        title="Supprimer cette conférence"
+      >
+        🗑️
+      </button>
+    }
+  </div>
+</div>

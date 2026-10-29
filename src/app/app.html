@@ -1,0 +1,25 @@
+<div class="app-layout">
+    <!-- 1. En-tête globale avec accès rapide au programme et navigation -->
+    <app-header></app-header>
+
+    <!-- 2. Contenu principal rendu par le routeur Angular -->
+    <main class="main-content">
+        <router-outlet></router-outlet>
+    </main>
+
+    <!-- 3. Tiroir / Drawer d'accès rapide au programme personnalisé (accessible depuis l'en-tête ou n'importe où) -->
+    @if (isScheduleDrawerOpen()) {
+    <div class="drawer-overlay" (click)="navigationService.closeScheduleDrawer()">
+        <div class="drawer-panel" (click)="$event.stopPropagation()">
+            <div class="drawer-header">
+                <h3 class="drawer-title">🎟️ Mon Programme Personnalisé</h3>
+                <button type="button" class="btn-close-drawer" (click)="navigationService.closeScheduleDrawer()">✕</button>
+            </div>
+
+            <div class="drawer-body">
+                <app-personal-schedule [mode]="'compact'"></app-personal-schedule>
+            </div>
+        </div>
+    </div>
+    }
+</div>

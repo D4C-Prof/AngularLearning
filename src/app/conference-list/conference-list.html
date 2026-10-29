@@ -1,0 +1,126 @@
+<div class="conferences-container">
+  <div class="header-section">
+    <div class="title-wrap">
+      <h1 class="main-title">📢 Catalogue des Conférences à Venir</h1>
+      <p class="subtitle">
+        Explorez les sessions prévues, réservez vos places en temps réel et personnalisez votre programme.
+      </p>
+    </div>
+
+    <!-- ─── BARRE D'EXPLORATION DU CATALOGUE (RECHERCHE & FILTRES) ─── -->
+    <div class="catalog-toolbar">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Rechercher par titre, intervenant ou sujet..."
+          [ngModel]="conferenceService.searchQuery()"
+          (ngModelChange)="conferenceService.setSearchQuery($event)"
+        />
+        @if (conferenceService.searchQuery()) {
+          <button
+            type="button"
+            class="btn-clear"
+            (click)="conferenceService.clearSearch()"
+            title="Effacer la recherche"
+          >
+            ✕
+          </button>
+        }
+      </div>
+
+      <div class="filter-actions">
+        <button
+          type="button"
+          class="btn-filter-inscrits"
+          [class.active]="conferenceService.filterInscritsOnly()"
+          (click)="conferenceService.toggleInscritsFilter()"
+        >
+          {{ conferenceService.filterInscritsOnly() ? '✓ Afficher tout' : '🎟️ Mes conférences inscrites' }}
+        </button>
+
+        <a
+          class="btn-create-conference"
+          routerLink="/conference/new"
+        >
+          ➕ Nouvelle conférence
+        </a>
+      </div>
+    </div>
+
+
+
+    <!-- ─── FILTRE PAR CATÉGORIE ─── -->
+    <div class="category-pills">
+      @for (cat of conferenceService.categories(); track cat) {
+        <button
+          type="button"
+          class="pill-btn"
+          [class.active]="conferenceService.selectedCategory() === cat"
+          (click)="conferenceService.setCategory(cat)"
+        >
+          {{ cat }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="content-grid">
+    <!-- Colonne 1 : Liste des conférences (Composant Enfant 1 : Conference) -->
+    <div class="list-section">
+      <div class="section-header-row">
+        <h2 class="section-title">
+          Conférences disponibles ({{ conferenceService.filteredConferences().length }})
+        </h2>
+        @if (
+          conferenceService.searchQuery() ||
+          conferenceService.selectedCategory() !== 'Toutes' ||
+          conferenceService.filterInscritsOnly()
+        ) {
+          <button
+            type="button"
+            class="btn-reset"
+            (click)="conferenceService.resetFilters()"
+          >
+            Réinitialiser filtres
+          </button>
+        }
+      </div>
+
+      <div class="cards-list">
+        @for (conf of conferenceService.filteredConferences(); track conf.id) {
+          <!-- Liaison Parent -> Enfant via [conference] & [isSelected] -->
+          <app-conference
+            [conference]="conf"
+            [isSelected]="conferenceService.selectedConference()?.id === conf.id"
+            (selectConference)="conferenceService.selectConference($event)"
+            (inscrireConference)="conferenceService.inscrire($event)"
+            (annulerConference)="conferenceService.annulerInscription($event)"
+            (supprimerConference)="conferenceService.supprimerConference($event)"
+          ></app-conference>
+        } @empty {
+          <div class="empty-list">
+            <p>🔎 Aucune conférence ne correspond à vos critères de recherche.</p>
+            <button
+              type="button"
+              class="btn-reset-large"
+              (click)="conferenceService.resetFilters()"
+            >
+              Voir toutes les conférences
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Colonne 2 : Détails de la conférence (Composant Enfant 2 : ConferenceDetail) -->
+    <div class="detail-section">
+      <app-conference-detail
+        [conference]="conferenceService.selectedConference()"
+        (inscrireConference)="conferenceService.inscrire($event)"
+        (annulerConference)="conferenceService.annulerInscription($event)"
+      ></app-conference-detail>
+    </div>
+  </div>
+</div>

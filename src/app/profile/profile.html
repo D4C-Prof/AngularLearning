@@ -1,0 +1,58 @@
+<div class="profile-container">
+  <!-- Carte d'identité / Profil utilisateur -->
+  <div class="profile-card">
+    <div class="avatar-col">
+      <div class="avatar-circle">
+        <span>👨‍💻</span>
+      </div>
+      <span class="user-status-pill">Compte Actif</span>
+    </div>
+
+    <div class="info-col">
+      <div class="user-header">
+        <h2 class="user-name">{{ user.prenom }} {{ user.nom }}</h2>
+        <span class="badge-role">{{ user.role }}</span>
+      </div>
+
+      <div class="user-details-grid">
+        <div class="detail-item">
+          <span class="detail-label">Email :</span>
+          <span class="detail-value">{{ user.email }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Établissement :</span>
+          <span class="detail-value">{{ user.universite }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Badge d'accès :</span>
+          <span class="detail-value code-badge">{{ user.badgeId }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Membre depuis :</span>
+          <span class="detail-value">{{ user.dateAdhesion }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section Mon Programme Personnalisé depuis la Page Profil -->
+  <div class="schedule-section">
+    <div class="section-top">
+      <div>
+        <h3 class="section-title">🎫 Mon Programme Personnalisé & Réservations</h3>
+        <p class="section-desc">
+          Consultez vos billets, vérifiez les horaires de vos sessions et gérez vos places réservées.
+        </p>
+      </div>
+
+      <button type="button" class="btn-more-conf" (click)="navigationService.naviguerVersCatalogue()">
+        + Réserver d'autres conférences
+      </button>
+
+    </div>
+
+    <div class="schedule-box">
+      <app-personal-schedule [mode]="'full'"></app-personal-schedule>
+    </div>
+  </div>
+</div>

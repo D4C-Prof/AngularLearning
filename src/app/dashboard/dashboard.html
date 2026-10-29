@@ -1,0 +1,108 @@
+<div class="dashboard-container">
+  <!-- Bannière de bienvenue -->
+  <div class="welcome-banner">
+    <div class="banner-content">
+      <span class="banner-badge">Tableau de bord</span>
+      <h1 class="banner-title">Bienvenue sur votre espace Conférences</h1>
+      <p class="banner-sub">
+        Retrouvez la synthèse de vos inscriptions, votre planning personnalisé et découvrez les prochaines sessions.
+      </p>
+    </div>
+    <button type="button" class="btn-primary-action" (click)="navigationService.naviguerVersCatalogue()">
+      👉 Explorer le catalogue
+    </button>
+
+  </div>
+
+  <!-- Métriques / Cartes KPI -->
+  <div class="kpi-grid">
+    <div class="kpi-card card-blue">
+      <div class="kpi-icon">🎟️</div>
+      <div class="kpi-info">
+        <span class="kpi-value">{{ statistiques().nbInscriptions }}</span>
+        <span class="kpi-label">Conférences réservées</span>
+      </div>
+    </div>
+
+    <div class="kpi-card card-green">
+      <div class="kpi-icon">🏛️</div>
+      <div class="kpi-info">
+        <span class="kpi-value">{{ statistiques().totalConferences }}</span>
+        <span class="kpi-label">Sessions au catalogue</span>
+      </div>
+    </div>
+
+    <div class="kpi-card card-amber">
+      <div class="kpi-icon">💺</div>
+      <div class="kpi-info">
+        <span class="kpi-value">{{ statistiques().placesRestantes }}</span>
+        <span class="kpi-label">Places encore libres</span>
+      </div>
+    </div>
+
+    <div class="kpi-card card-purple">
+      <div class="kpi-icon">⏰</div>
+      <div class="kpi-info">
+        <span class="kpi-value">
+          {{ statistiques().prochaineConference ? statistiques().prochaineConference?.date : '--' }}
+        </span>
+        <span class="kpi-label">Prochaine date inscrite</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grille principale : Programme personnalisé + Suggestions -->
+  <div class="dashboard-grid">
+    <!-- Colonne 1 : Programme personnalisé accessible depuis le dashboard -->
+    <div class="main-column">
+      <div class="panel-box">
+        <app-personal-schedule [mode]="'full'"></app-personal-schedule>
+      </div>
+    </div>
+
+    <!-- Colonne 2 : Recommandations rapides -->
+    <div class="side-column">
+      <div class="panel-box">
+        <div class="panel-header">
+          <h3 class="panel-title">💡 Sessions recommandées</h3>
+          <span class="panel-sub">Places disponibles</span>
+        </div>
+
+        <div class="suggestions-list">
+          @for (conf of suggestions(); track conf.id) {
+            <div class="suggestion-item">
+              <div class="sugg-info">
+                <span class="sugg-cat">{{ conf.categorie || 'Tech' }}</span>
+                <h4 class="sugg-title">{{ conf.titre }}</h4>
+                <span class="sugg-date">🗓️ {{ conf.date }} • {{ conf.placesDisponibles }} places</span>
+              </div>
+              <div class="sugg-actions">
+                <button
+                  type="button"
+                  class="btn-quick-register"
+                  (click)="conferenceService.inscrire(conf.id)"
+                  title="Réserver directement"
+                >
+                  + Réserver
+                </button>
+
+                <button
+                  type="button"
+                  class="btn-quick-detail"
+                  (click)="voirDetails(conf)"
+                  title="Voir les détails"
+                >
+                  Détails
+                </button>
+              </div>
+            </div>
+          } @empty {
+            <p class="empty-sugg">
+              Vous êtes déjà inscrit à toutes les conférences disponibles ou aucune place n'est libre !
+            </p>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

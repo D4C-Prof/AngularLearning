@@ -1,0 +1,65 @@
+<div class="schedule-container" [class.compact-mode]="mode() === 'compact'">
+  <div class="schedule-header">
+    <div class="header-info">
+      <h3 class="schedule-title">📅 Mon Programme Personnalisé</h3>
+      <span class="count-badge">
+        {{ programme().length }} conférence(s) réservée(s)
+      </span>
+    </div>
+  </div>
+
+  @if (programme().length > 0) {
+    <div class="schedule-list">
+      @for (conf of programme(); track conf.id) {
+        <div class="schedule-card">
+          <div class="schedule-card-left">
+            <span class="badge-cat">{{ conf.categorie || 'Conférence' }}</span>
+            <h4 class="card-title">{{ conf.titre }}</h4>
+            <div class="card-meta">
+              <span class="meta-item">👤 {{ conf.intervenant }}</span>
+              <span class="meta-item">🗓️ {{ conf.date }}</span>
+              @if (conf.heure) {
+                <span class="meta-item">⏰ {{ conf.heure }}</span>
+              }
+              @if (conf.salle) {
+                <span class="meta-item">📍 {{ conf.salle }}</span>
+              }
+            </div>
+          </div>
+
+          <div class="schedule-card-actions">
+            <span class="status-confirmed">✓ Place confirmée</span>
+            <div class="button-group">
+              <button
+                type="button"
+                class="btn-view"
+                (click)="voirConference(conf)"
+                title="Consulter les détails dans le catalogue"
+              >
+                Détails
+              </button>
+              <button
+                type="button"
+                class="btn-cancel"
+                (click)="conferenceService.annulerInscription(conf.id)"
+                title="Libérer votre place"
+              >
+                Annuler
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="empty-schedule">
+      <div class="empty-icon">🎟️</div>
+      <h4>Aucune conférence réservée pour le moment</h4>
+      <p>Parcourez notre catalogue des conférences et réservez votre place dès maintenant !</p>
+      <button type="button" class="btn-browse" (click)="navigationService.naviguerVersCatalogue()">
+        👉 Parcourir le catalogue
+      </button>
+
+    </div>
+  }
+</div>

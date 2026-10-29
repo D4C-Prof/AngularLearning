@@ -1,0 +1,242 @@
+<div class="create-container">
+  <!-- En-tête de la page de création -->
+  <div class="create-header">
+    <div class="header-text">
+      <span class="badge-new">➕ Nouvelle Session</span>
+      <h1 class="page-title">Créer et planifier une conférence</h1>
+      <p class="page-desc">
+        Renseignez les informations de la conférence pour l'ajouter au catalogue et ouvrir les réservations.
+      </p>
+    </div>
+    <button type="button" class="btn-back" (click)="annuler()">
+      ← Retour au catalogue
+    </button>
+  </div>
+
+  <!-- Message de succès après création -->
+  @if (successConference(); as conf) {
+    <div class="success-banner">
+      <div class="success-icon">🎉</div>
+      <div class="success-content">
+        <h3>Conférence ajoutée avec succès !</h3>
+        <p>
+          La conférence <strong>« {{ conf.titre }} »</strong> a été publiée avec
+          <strong>{{ conf.placesDisponibles }} places</strong> disponibles.
+        </p>
+      </div>
+      <div class="success-actions">
+        <button type="button" class="btn-view-catalog" (click)="voirDansCatalogue()">
+          👉 Voir dans le catalogue
+        </button>
+        <button type="button" class="btn-create-another" (click)="reinitialiser()">
+          + Ajouter une autre
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Formulaire de création — Reactive Form -->
+  <div class="form-card">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+      <div class="form-grid">
+
+        <!-- 1. Titre -->
+        <div class="form-group full-width">
+          <label for="titre" class="form-label">
+            Titre de la conférence <span class="required">*</span>
+          </label>
+          <input
+            type="text"
+            id="titre"
+            formControlName="titre"
+            class="form-control"
+            placeholder="Ex : Architecture Micro-frontends & Angular 19"
+            [class.is-invalid]="fieldInvalid('titre')"
+          />
+          @if (fieldInvalid('titre')) {
+            <div class="error-msg">
+              @if (hasError('titre', 'required')) {
+                Le titre de la conférence est obligatoire.
+              }
+              @if (hasError('titre', 'minlength')) {
+                Le titre doit comporter au moins 5 caractères.
+              }
+              @if (hasError('titre', 'maxlength')) {
+                Le titre ne doit pas dépasser 150 caractères.
+              }
+            </div>
+          }
+        </div>
+
+        <!-- 2. Intervenant -->
+        <div class="form-group">
+          <label for="intervenant" class="form-label">
+            Intervenant / Speaker <span class="required">*</span>
+          </label>
+          <input
+            type="text"
+            id="intervenant"
+            formControlName="intervenant"
+            class="form-control"
+            placeholder="Ex : Dr. Jean Dupont"
+            [class.is-invalid]="fieldInvalid('intervenant')"
+          />
+          @if (fieldInvalid('intervenant')) {
+            <div class="error-msg">
+              @if (hasError('intervenant', 'required')) {
+                Le nom de l'intervenant est obligatoire.
+              }
+              @if (hasError('intervenant', 'minlength')) {
+                Minimum 3 caractères requis.
+              }
+            </div>
+          }
+        </div>
+
+        <!-- 3. Catégorie -->
+        <div class="form-group">
+          <label for="categorie" class="form-label">
+            Catégorie / Domaine <span class="required">*</span>
+          </label>
+          <select
+            id="categorie"
+            formControlName="categorie"
+            class="form-control"
+          >
+            @for (cat of categories; track cat) {
+              <option [value]="cat">{{ cat }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- 4. Date -->
+        <div class="form-group">
+          <label for="date" class="form-label">
+            Date de la session <span class="required">*</span>
+          </label>
+          <input
+            type="text"
+            id="date"
+            formControlName="date"
+            class="form-control"
+            placeholder="Ex : 18 Mai 2026"
+            [class.is-invalid]="fieldInvalid('date')"
+          />
+          @if (fieldInvalid('date')) {
+            <div class="error-msg">La date de la session est obligatoire.</div>
+          }
+        </div>
+
+        <!-- 5. Horaire -->
+        <div class="form-group">
+          <label for="heure" class="form-label">Horaire / Créneau</label>
+          <input
+            type="text"
+            id="heure"
+            formControlName="heure"
+            class="form-control"
+            placeholder="Ex : 10h00 - 12h30"
+          />
+        </div>
+
+        <!-- 6. Salle / Lieu -->
+        <div class="form-group">
+          <label for="salle" class="form-label">Salle / Amphi</label>
+          <input
+            type="text"
+            id="salle"
+            formControlName="salle"
+            class="form-control"
+            placeholder="Ex : Auditorium Turing ou B204"
+          />
+        </div>
+
+        <!-- 7. Places disponibles -->
+        <div class="form-group">
+          <label for="placesDisponibles" class="form-label">
+            Nombre de places disponibles <span class="required">*</span>
+          </label>
+          <input
+            type="number"
+            id="placesDisponibles"
+            formControlName="placesDisponibles"
+            class="form-control"
+            min="1"
+            max="500"
+            [class.is-invalid]="fieldInvalid('placesDisponibles')"
+          />
+          @if (fieldInvalid('placesDisponibles')) {
+            <div class="error-msg">
+              @if (hasError('placesDisponibles', 'required')) {
+                Ce champ est obligatoire.
+              }
+              @if (hasError('placesDisponibles', 'min')) {
+                Le nombre de places doit être supérieur à 0.
+              }
+              @if (hasError('placesDisponibles', 'max')) {
+                Le nombre de places ne peut pas dépasser 500.
+              }
+            </div>
+          }
+        </div>
+
+        <!-- 8. Description -->
+        <div class="form-group full-width">
+          <label for="description" class="form-label">
+            Description du contenu
+            <span class="char-count">({{ f['description'].value?.length ?? 0 }} / 600)</span>
+          </label>
+          <textarea
+            id="description"
+            formControlName="description"
+            rows="4"
+            class="form-control"
+            placeholder="Détaillez le sujet, les prérequis et les objectifs pédagogiques de la conférence..."
+            [class.is-invalid]="fieldInvalid('description')"
+          ></textarea>
+          @if (fieldInvalid('description')) {
+            <div class="error-msg">La description ne doit pas dépasser 600 caractères.</div>
+          }
+        </div>
+
+      </div>
+
+      <!-- Indicateur d'état global du formulaire -->
+      @if (submitted() && form.invalid) {
+        <div class="form-error-banner">
+          ⚠️ Veuillez corriger les erreurs ci-dessus avant de soumettre.
+        </div>
+      }
+
+      <!-- Actions du formulaire -->
+      <div class="form-footer">
+        <button
+          type="button"
+          class="btn-secondary"
+          (click)="reinitialiser()"
+        >
+          Réinitialiser
+        </button>
+
+        <div class="action-right">
+          <button
+            type="button"
+            class="btn-cancel"
+            (click)="annuler()"
+          >
+            Annuler
+          </button>
+
+          <button
+            type="submit"
+            class="btn-submit"
+            [disabled]="submitted() && form.invalid"
+          >
+            ✓ Enregistrer et publier la conférence
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
